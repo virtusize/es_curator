@@ -20,7 +20,7 @@ import datetime
 import requests
 import arrow
 
-RETENTION = datetime.timedelta(days=7)
+RETENTION = datetime.timedelta(days=31)
 TODAY = arrow.utcnow().floor('day')
 
 def main():
