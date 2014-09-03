@@ -4,12 +4,13 @@ ES Curator.
 
 Usage:
   es_curator -h | --help
-  es_curator [--dry] <url>
+  es_curator [--dry] [--period <days>] <url>
 
 Options:
-  <url>          The base url to use.
-  -h --help      Show this help.
-  --dry          Dry run, do not change anything.
+  <url>               The base url to use.
+  -p --period <days>  Retention period in days (default is  7).
+  -h --help           Show this help.
+  --dry               Dry run, do not change anything.
 
 Examples:
 
@@ -20,8 +21,8 @@ import datetime
 import requests
 import arrow
 
-RETENTION = datetime.timedelta(days=31)
 TODAY = arrow.utcnow().floor('day')
+
 
 def main():
     """
@@ -38,6 +39,13 @@ def main():
         print 'Invalid ES URL'
         return
 
+    period = arguments.get('--period', default=7)
+    if not period:
+        print 'Invalid retention period'
+        return
+
+    retention = datetime.timedelta(days=period)
+
     print 'Using url: %s' % url
     r = requests.get(url + '/_aliases')
     indices = r.json().keys()
@@ -48,7 +56,9 @@ def main():
 
     index_time_map = dict([(name, arrow.get(name[-10:])) for name in indices])
 
-    indices_to_delete = dict([(name, arrow.get(name[-10:])) for name, time in index_time_map.items() if TODAY - time > RETENTION])
+    indices_to_delete = dict([(name, arrow.get(name[-10:]))
+                              for name, time in index_time_map.items()
+                              if TODAY - time > retention])
 
     indices_to_delete = sorted(indices_to_delete.keys())
 
