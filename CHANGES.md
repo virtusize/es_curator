@@ -11,6 +11,10 @@ Use list notation, and following prefixes:
 
 ### Next
 
+### 0.1.1
+
+- Bugfix: Default value for retention period. (ik)
+
 ### 0.1.0
 
 - The first released version
