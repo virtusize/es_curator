@@ -8,7 +8,7 @@ Usage:
 
 Options:
   <url>               The base url to use.
-  -p --period <days>  Retention period in days (default is  7).
+  -p --period <days>  Retention period in days [default: 7]
   -h --help           Show this help.
   --dry               Dry run, do not change anything.
 
@@ -39,12 +39,12 @@ def main():
         print 'Invalid ES URL'
         return
 
-    period = arguments.get('--period', default=7)
+    period = arguments.get('--period')
     if not period:
         print 'Invalid retention period'
         return
 
-    retention = datetime.timedelta(days=period)
+    retention = datetime.timedelta(days=int(period))
 
     print 'Using url: %s' % url
     r = requests.get(url + '/_aliases')
