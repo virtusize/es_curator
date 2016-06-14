@@ -11,6 +11,10 @@ Use list notation, and following prefixes:
 
 ### Next
 
+### 0.2.0
+
+- Feature: Add support for AWS request sign. (ik)
+
 ### 0.1.1
 
 - Bugfix: Default value for retention period. (ik)
